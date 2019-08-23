@@ -12,7 +12,7 @@ const AuthContext = React.createContext<AuthContextType>({
 });
 
 function AuthenticationProvider(props: any) {
-  const hasToken = localStorage.getItem("token") != undefined;
+  const hasToken = localStorage.getItem("token") !== undefined;
   const [requestSent, setRequestSent] = useState(false);
   const [state, dispatch] = useThunkReducer(authReducer, {
     loading: hasToken,

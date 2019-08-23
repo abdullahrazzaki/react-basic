@@ -20,8 +20,6 @@ export function login(
         type: LOGIN_SUCCESS,
         payload: { user: { email } }
       });
-      // console.log("Redirecting to ", redirectTo);
-      // if (redirectTo) dispatch(push(redirectTo));
       onLoginSuccessful();
     }, 3000);
   };
