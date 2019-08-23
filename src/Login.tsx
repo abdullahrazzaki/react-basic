@@ -5,15 +5,20 @@ export const Login = (props: any) => {
   const {
     location: {
       state: { from }
-    }
+    },
+    history
   } = props;
-  console.log("From: ", from);
+  console.log("From: ", from, props);
   return (
     <div>
       <div>Not logged in</div>
 
       <button
-        onClick={() => login("test@gmail.com", "testpass", from.pathname)}
+        onClick={() => {
+          login("test@gmail.com", "testpass", () =>
+            history.push(from.pathname)
+          );
+        }}
       >
         login
       </button>

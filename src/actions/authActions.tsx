@@ -1,5 +1,3 @@
-import { push } from "connected-react-router";
-
 export const LOGIN_STARTED = "LOGIN_STARTED",
   LOGIN_SUCCESS = "LOGIN_SUCCESS",
   LOGIN_FAILED = "LOGIN_FAILED";
@@ -10,16 +8,21 @@ const loginSuccess = (user: any) => ({
   type: LOGIN_SUCCESS,
   payload: { user }
 });
-export function login(email: string, pw: string, redirectTo: string) {
+export function login(
+  email: string,
+  pw: string,
+  onLoginSuccessful: () => void
+) {
   return (dispatch: any) => {
     dispatch({ type: LOGIN_STARTED });
     setTimeout(() => {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: { user: { email }, redirectTo }
+        payload: { user: { email } }
       });
-      console.log("Redirecting to ", redirectTo);
-      if (redirectTo) dispatch(push(redirectTo));
+      // console.log("Redirecting to ", redirectTo);
+      // if (redirectTo) dispatch(push(redirectTo));
+      onLoginSuccessful();
     }, 3000);
   };
 }

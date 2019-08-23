@@ -7,6 +7,8 @@ export const AuthenticatedApp = () => {
     <Switch>
       <Route path="/test" component={() => <div>Test</div>} />
       <Route exact path="/" component={Test} />
+      <Route path="/t" component={Test} />
+
       <Redirect to="/" />
     </Switch>
   );
