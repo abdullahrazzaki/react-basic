@@ -20,7 +20,6 @@ export function login(email: string, pw: string, redirectTo: string) {
       });
       console.log("Redirecting to ", redirectTo);
       if (redirectTo) dispatch(push(redirectTo));
-      push(redirectTo);
     }, 3000);
   };
 }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { login as loginAction, loginWithToken } from "../actions/authActions";
 import useThunkReducer from "react-hook-thunk-reducer";
+import { connect } from "react-redux";
 type AuthContextType = {
   data: any;
   login: (email: string, password: string, redirectTo?: string) => void;
@@ -23,35 +24,44 @@ function AuthenticationProvider(props: any) {
   // whether or not we have a user token and if we do, then we render a spinner
 
   // while we go retrieve that user's information.
+  const { login, loading, loggedIn, loginWithToken } = props;
   const hasToken = localStorage.getItem("token") != undefined;
   const [requestSent, setRequestSent] = useState(false);
-  const [state, dispatch] = useThunkReducer(authReducer, {
-    loggedIn: false,
-    user: undefined,
-    loading: hasToken
-  });
   if (hasToken && !requestSent) {
-    dispatch(loginWithToken(localStorage.getItem("token") || ""));
+    loginWithToken(localStorage.getItem("token") || "");
     setRequestSent(true);
   }
 
-  if (state.loading) {
+  if (hasToken && loading) {
     return <div>Loading...</div>;
   }
-  const login = (email: string, pw: string, from: any) => {
-    dispatch(loginAction(email, pw, from));
-  };
   const register = () => {}; // register the user
 
   const logout = () => {};
   return (
     <AuthContext.Provider
-      value={{ data: state, login, logout, register, loggedIn: state.loggedIn }}
+      value={{ data: props, login, logout, register, loggedIn: loggedIn }}
       {...props}
     />
   );
 }
-const AuthProvider = AuthenticationProvider;
+const mapStateToProps = (state: any) => {
+  return { ...state.auth };
+};
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    login: (email: string, pw: string, from: any) => {
+      dispatch(loginAction(email, pw, from));
+    },
+    loginWithToken: (token: string) => {
+      dispatch(loginWithToken(token));
+    }
+  };
+};
+const AuthProvider = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthenticationProvider);
 const useAuth = () => React.useContext(AuthContext);
 
 export { AuthProvider, useAuth };

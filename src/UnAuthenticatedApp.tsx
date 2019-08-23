@@ -4,7 +4,6 @@ import { Login } from "./Login";
 import { connect } from "react-redux";
 
 const UnAuthenticatedAppComponent = (props: any) => {
-  console.log("Props: ", props);
   return (
     <Switch>
       <Route path="/login" component={Login} />
